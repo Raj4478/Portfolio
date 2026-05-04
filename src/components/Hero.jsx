@@ -1,212 +1,209 @@
 import { motion } from "framer-motion";
-import { GitBranch, MapPin, Mail, ArrowDown, Briefcase } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
+import { Mail,  ArrowDown, Zap } from "lucide-react";
+import ParticleBackground from "./ParticleBackground";
+import CountUp from "react-countup";
 
-const containerVariants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-};
+const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } } };
+const item = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22,1,0.36,1] } } };
 
 export default function Hero({ user, totalStars, reposCount }) {
-  const nameParts = (user?.name || user?.login || "Developer").split(" ");
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(" ");
-
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20" id="about">
-      {/* Animated blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.6, 0.4] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(79,142,247,0.08) 0%, transparent 70%)" }}
-        />
-        <motion.div
-          animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-1/2 -right-48 w-[500px] h-[500px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 70%)" }}
-        />
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(52,211,153,0.05) 0%, transparent 70%)" }}
-        />
+    <section id="about" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Particles */}
+      <ParticleBackground />
+
+      {/* Grid */}
+      <div className="absolute inset-0 grid-bg opacity-60 z-0" />
+
+      {/* Radial glow center */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(79,142,247,0.07) 0%, transparent 65%)" }} />
+        <div className="absolute top-2/3 right-10 w-[400px] h-[400px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 65%)" }} />
       </div>
 
-      {/* Grid pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(79,142,247,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(79,142,247,0.5) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
+      <div className="max-w-6xl mx-auto px-6 pt-24 pb-16 w-full relative z-10">
+        <div className="grid lg:grid-cols-[1fr,380px] gap-16 items-center">
 
-      <div className="max-w-6xl mx-auto px-6 w-full relative z-10">
-        <div className="grid lg:grid-cols-[1fr,auto] gap-12 items-center">
-          <motion.div variants={containerVariants} initial="hidden" animate="show">
-            {/* Status badge */}
-            <motion.div variants={itemVariants} className="mb-8">
-              <span className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-full border border-[rgba(52,211,153,0.3)] text-[#34d399] bg-[rgba(52,211,153,0.05)]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
-                Open to opportunities
+          {/* LEFT */}
+          <motion.div variants={stagger} initial="hidden" animate="show">
+
+            {/* Badge */}
+            <motion.div variants={item} className="mb-6">
+              <span className="inline-flex items-center gap-2.5 text-xs font-mono px-4 py-2 rounded-full glass border border-[rgba(52,211,153,0.25)] text-[#34d399]">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34d399] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#34d399]" />
+                </span>
+                Available for SDE-II opportunities
               </span>
             </motion.div>
 
+            {/* Greeting */}
+            <motion.p variants={item} className="font-mono text-[#4f8ef7] text-sm tracking-widest mb-3">
+              Hi there, I'm
+            </motion.p>
+
             {/* Name */}
-            <motion.h1
-              variants={itemVariants}
-              className="font-display font-bold leading-[0.95] mb-6"
-              style={{ fontSize: "clamp(3.5rem, 8vw, 6rem)" }}
-            >
-              <span className="text-white">{firstName}</span>
-              {lastName && (
-                <>
-                  {" "}
-                  <span className="gradient-text">{lastName}</span>
-                </>
-              )}
+            <motion.h1 variants={item}
+              className="font-display font-bold leading-[0.95] mb-4"
+              style={{ fontSize: "clamp(3rem, 7vw, 5.5rem)" }}>
+              <span className="text-white text-glow">Rajeshwar</span><br />
+              <span className="gradient-text">Singh</span>
             </motion.h1>
 
-            {/* Role */}
-            <motion.div variants={itemVariants} className="mb-6">
-              <p className="font-display font-medium text-2xl text-[#6b7fa3]">
-                Software Engineer
-                <span className="text-[#4f8ef7]"> / </span>
-                Full Stack Developer
-              </p>
+            {/* Type animation */}
+            <motion.div variants={item} className="mb-6 h-10 flex items-center">
+              <span className="font-display text-xl md:text-2xl text-[#6b7fa3] mr-2">I build</span>
+              <TypeAnimation
+                sequence={[
+                  "distributed systems.", 2000,
+                  "scalable backends.", 2000,
+                  "React frontends.", 2000,
+                  "AWS pipelines.", 2000,
+                  "full-stack products.", 2000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+                className="font-display text-xl md:text-2xl text-[#4f8ef7] font-semibold"
+              />
             </motion.div>
 
             {/* Bio */}
-            <motion.p
-              variants={itemVariants}
-              className="text-[#8898b8] text-base leading-relaxed max-w-xl mb-8"
-            >
-              {user?.bio ||
-                `Building scalable systems and elegant interfaces. Passionate about clean architecture, developer experience, and shipping products that make a real impact.`}
+            <motion.p variants={item}
+              className="text-[#8898b8] text-base leading-relaxed max-w-lg mb-8">
+              Full-Stack SDE at <span className="text-white font-medium">Bimaplan (YC-backed)</span>. 
+              Architecting claims automation pipelines integrating 4 insurers — AES-256 encryption, SQS FIFO, OCR processing — 
+              cutting claim time by <span className="text-[#34d399] font-mono">65%</span> and errors by <span className="text-[#34d399] font-mono">90%</span>.
             </motion.p>
 
-            {/* Meta */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mb-10 text-sm text-[#6b7fa3]">
-              {user?.location && (
-                <span className="flex items-center gap-1.5">
-                  <MapPin size={14} className="text-[#4f8ef7]" />
-                  {user.location}
+            {/* CTA row */}
+            <motion.div variants={item} className="flex flex-wrap gap-3 mb-10">
+              <motion.a href="#projects" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                className="group flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm font-display text-[#050810] relative overflow-hidden"
+                style={{ background: "linear-gradient(135deg, #4f8ef7, #a78bfa)" }}>
+                <span className="relative z-10 flex items-center gap-2">
+                  <Zap size={14} /> View Projects
                 </span>
-              )}
-              {user?.email && (
-                <span className="flex items-center gap-1.5">
-                  <Mail size={14} className="text-[#4f8ef7]" />
-                  {user.email}
-                </span>
-              )}
-              <span className="flex items-center gap-1.5">
-                <Briefcase size={14} className="text-[#4f8ef7]" />
-                {user?.company || "Independent"}
-              </span>
+                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
+              </motion.a>
+
+              <motion.a href={`mailto:${user?.email || "Singhrajeshwar28@gmail.com"}`}
+                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm font-display neon-border text-[#a8c3ff] hover:text-white transition-all">
+                <Mail size={14} /> Hire Me
+              </motion.a>
+
+              <motion.a href={user?.html_url || "https://github.com/Raj4478"}
+                target="_blank" whileHover={{ scale: 1.04 }}
+                className="flex items-center gap-2 px-4 py-3 rounded-xl text-[#6b7fa3] glass hover:text-white transition-all">
+                <GithubIcon size={16} />
+              </motion.a>
+
+              <motion.a href="https://linkedin.com/in/rajeshwar-singh-b6990419a"
+                target="_blank" whileHover={{ scale: 1.04 }}
+                className="flex items-center gap-2 px-4 py-3 rounded-xl text-[#6b7fa3] glass hover:text-[#0077b5] transition-all">
+                <LinkedinIcon2 size={16} />
+              </motion.a>
             </motion.div>
 
-            {/* CTAs */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
-              <a
-                href={user?.html_url || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-2 px-6 py-3 rounded-xl bg-[#4f8ef7] text-[#080c14] font-semibold text-sm hover:bg-[#6ba3f8] transition-all duration-200 font-display"
-              >
-                <GitBranch size={15} />
-                View GitHub
-              </a>
-              <a
-                href="#projects"
-                className="flex items-center gap-2 px-6 py-3 rounded-xl border border-[rgba(99,130,195,0.22)] text-[#a8c3ff] font-semibold text-sm hover:bg-[#4f8ef710] hover:border-[#4f8ef740] transition-all duration-200 font-display"
-              >
-                See Projects
-                <ArrowDown size={14} />
-              </a>
-              {user?.email && (
-                <a
-                  href={`mailto:${user.email}`}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl border border-[rgba(99,130,195,0.22)] text-[#6b7fa3] font-semibold text-sm hover:text-white hover:border-[rgba(99,130,195,0.4)] transition-all duration-200 font-display"
-                >
-                  <Mail size={14} />
-                  Hire Me
-                </a>
-              )}
+            {/* Stats */}
+            <motion.div variants={item} className="flex gap-8">
+              {[
+                { end: reposCount || 0, suffix: "+", label: "Repositories" },
+                { end: totalStars || 0, suffix: "", label: "Total Stars" },
+                { end: 99, suffix: ".8%", label: "System Uptime" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="font-display font-bold text-2xl text-white">
+                    <CountUp end={s.end} duration={2.5} suffix={s.suffix} enableScrollSpy scrollSpyOnce />
+                  </div>
+                  <div className="text-xs font-mono text-[#6b7fa3] mt-0.5">{s.label}</div>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
 
-          {/* Avatar + stats */}
+          {/* RIGHT — avatar card */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden lg:flex flex-col items-center gap-6"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.22,1,0.36,1] }}
+            className="hidden lg:block"
           >
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#4f8ef750] to-[#a78bfa50] blur-xl scale-110" />
-              <div className="relative w-48 h-48 rounded-full border-2 border-[rgba(79,142,247,0.3)] overflow-hidden">
-                {user?.avatar_url ? (
-                  <img src={user.avatar_url} alt={user.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-[#162033] flex items-center justify-center text-5xl font-display font-bold gradient-text">
-                    {(user?.name || user?.login || "D")[0].toUpperCase()}
-                  </div>
-                )}
-              </div>
-              {/* Orbit ring */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-[-16px] rounded-full border border-dashed border-[rgba(79,142,247,0.2)]"
-              >
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#4f8ef7] shadow-[0_0_8px_#4f8ef7]" />
-              </motion.div>
-            </div>
+              {/* Glow behind card */}
+              <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-30"
+                style={{ background: "linear-gradient(135deg, #4f8ef7, #a78bfa)" }} />
 
-            {/* Stats cards */}
-            {[
-              { label: "Repositories", value: reposCount || 0 },
-              { label: "Followers", value: user?.followers || 0 },
-              { label: "Total Stars", value: totalStars || 0 },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-                className="w-full px-5 py-3 rounded-xl bg-[#0f1622] border border-[rgba(99,130,195,0.12)] flex items-center justify-between"
-              >
-                <span className="text-xs text-[#6b7fa3] font-mono">{stat.label}</span>
-                <span className="font-display font-bold text-white text-lg">{stat.value}</span>
-              </motion.div>
-            ))}
+              <div className="relative glass rounded-3xl p-6 neon-border">
+                {/* Terminal header */}
+                <div className="flex items-center gap-2 mb-4 pb-4 border-b border-[rgba(99,130,195,0.12)]">
+                  <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                  <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                  <span className="ml-2 font-mono text-xs text-[#6b7fa3]">raj4478.profile</span>
+                </div>
+
+                {/* Avatar */}
+                <div className="relative mx-auto w-36 h-36 mb-5 float">
+                  <div className="absolute inset-0 rounded-full blur-xl opacity-60"
+                    style={{ background: "linear-gradient(135deg, #4f8ef7, #a78bfa)" }} />
+                  <div className="relative w-36 h-36 rounded-full overflow-hidden border-2 border-[rgba(79,142,247,0.4)]">
+                    {user?.avatar_url
+                      ? <img src={user.avatar_url} alt="Rajeshwar" className="w-full h-full object-cover" />
+                      : <div className="w-full h-full bg-gradient-to-br from-[#4f8ef7] to-[#a78bfa] flex items-center justify-center text-4xl font-display font-bold text-white">R</div>
+                    }
+                  </div>
+                  {/* Orbit */}
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-[-14px] rounded-full border border-dashed border-[rgba(79,142,247,0.2)]">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#4f8ef7]"
+                      style={{ boxShadow: "0 0 8px #4f8ef7" }} />
+                  </motion.div>
+                </div>
+
+                {/* Info */}
+                <div className="text-center mb-5">
+                  <p className="font-display font-bold text-white text-lg">Rajeshwar Singh</p>
+                  <p className="text-sm text-[#4f8ef7] font-mono mt-1">Full-Stack Engineer</p>
+                  <p className="text-xs text-[#6b7fa3] mt-1">📍 Chandigarh, India</p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                  {["NestJS","TypeScript","AWS","React","PostgreSQL"].map((t) => (
+                    <span key={t} className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-[#4f8ef715] text-[#4f8ef7] border border-[rgba(79,142,247,0.2)]">{t}</span>
+                  ))}
+                </div>
+
+                {/* Terminal lines */}
+                <div className="font-mono text-[11px] space-y-1.5 text-[#6b7fa3]">
+                  <div><span className="text-[#34d399]">→</span> <span className="text-white">Bimaplan</span> SDE-I</div>
+                  <div><span className="text-[#34d399]">→</span> MCA · CGC Jhanjeri</div>
+                  <div><span className="text-[#34d399]">→</span> YC-backed company</div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-[#34d399]">→</span>
+                    <span className="text-[#a78bfa]">status:</span>
+                    <span className="text-[#34d399]">open to work</span>
+                    <span className="blink text-[#4f8ef7]">_</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span className="text-xs font-mono text-[#6b7fa3] tracking-widest uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <ArrowDown size={14} className="text-[#4f8ef7]" />
+        {/* Scroll cue */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <div className="w-px h-12 bg-gradient-to-b from-transparent via-[#4f8ef7] to-transparent scroll-line" />
+          <ArrowDown size={12} className="text-[#4f8ef7]" />
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

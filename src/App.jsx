@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useGitHub } from "./hooks/useGitHub";
+import Cursor from "./components/Cursor";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
@@ -16,9 +18,8 @@ export default function App() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center p-8 max-w-md">
-          <p className="font-mono text-[#4f8ef7] text-sm mb-2">// error</p>
-          <p className="text-[#6b7fa3] text-sm">{error}</p>
+        <div className="text-center p-8 font-mono text-sm text-[#6b7fa3]">
+          <span className="text-[#4f8ef7]">// error:</span> {error}
         </div>
       </div>
     );
@@ -30,12 +31,13 @@ export default function App() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="mesh-bg"
+        className="grain relative"
       >
-        <div className="grain" />
+        <Cursor />
         <Navbar user={user} />
         <main>
           <Hero user={user} totalStars={totalStars} reposCount={user?.public_repos} />
+          <Experience />
           <Projects repos={topRepos} />
           <Skills languages={languages} />
           <Contact user={user} />
