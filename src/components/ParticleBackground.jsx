@@ -1,8 +1,16 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
 export default function ParticleBackground() {
+  const [particleCount, setParticleCount] = useState(70);
+
+  useEffect(() => {
+    // Reduce particles on mobile for performance
+    if (window.innerWidth < 768) setParticleCount(25);
+    else if (window.innerWidth < 1024) setParticleCount(45);
+  }, []);
+
   const init = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
@@ -17,12 +25,12 @@ export default function ParticleBackground() {
         fpsLimit: 60,
         interactivity: {
           events: {
-            onHover: { enable: true, mode: "repulse" },
+            onHover: { enable: window.innerWidth > 768, mode: "repulse" },
             onClick: { enable: true, mode: "push" },
           },
           modes: {
             repulse: { distance: 100, duration: 0.4 },
-            push: { quantity: 2 },
+            push: { quantity: 1 },
           },
         },
         particles: {
@@ -31,7 +39,7 @@ export default function ParticleBackground() {
             color: "#4f8ef730",
             distance: 130,
             enable: true,
-            opacity: 0.25,
+            opacity: 0.2,
             width: 1,
           },
           move: {
@@ -39,13 +47,13 @@ export default function ParticleBackground() {
             enable: true,
             outModes: { default: "bounce" },
             random: true,
-            speed: 0.6,
+            speed: 0.5,
             straight: false,
           },
-          number: { density: { enable: true }, value: 70 },
-          opacity: { value: { min: 0.1, max: 0.5 } },
+          number: { density: { enable: true }, value: particleCount },
+          opacity: { value: { min: 0.1, max: 0.4 } },
           shape: { type: "circle" },
-          size: { value: { min: 1, max: 2.5 } },
+          size: { value: { min: 1, max: 2 } },
         },
         detectRetina: true,
       }}

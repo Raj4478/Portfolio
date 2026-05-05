@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
+// Only render on non-touch devices
 export default function Cursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
   const [hovering, setHovering] = useState(false);
+  const [visible, setVisible] = useState(false);
   const pos = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const raf = useRef(null);
 
   useEffect(() => {
+    // Don't show custom cursor on touch devices
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     const onMove = (e) => {
+      if (!visible) setVisible(true);
       pos.current = { x: e.clientX, y: e.clientY };
       if (dotRef.current) {
         dotRef.current.style.left = e.clientX + "px";
@@ -43,10 +49,15 @@ export default function Cursor() {
     };
   }, []);
 
+  // Don't render on touch devices
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+    return null;
+  }
+
   return (
     <>
-      <div ref={dotRef} className="cursor-dot" />
-      <div ref={ringRef} className={`cursor-ring ${hovering ? "hover" : ""}`} />
+      <div ref={dotRef} className={`cursor-dot transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`} />
+      <div ref={ringRef} className={`cursor-ring transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"} ${hovering ? "hover" : ""}`} />
     </>
   );
 }
